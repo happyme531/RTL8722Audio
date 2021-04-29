@@ -29,7 +29,7 @@
 #include "AudioOutputI2SNoDAC.h"
 
 
-AudioOutputI2SNoDAC::AudioOutputI2SNoDAC(int port) : AudioOutputI2S(port, false)
+AudioOutputI2SNoDAC::AudioOutputI2SNoDAC(int port) : AudioOutputI2S() //FIX
 {
   SetOversampling(32);
   lastSamp = 0;

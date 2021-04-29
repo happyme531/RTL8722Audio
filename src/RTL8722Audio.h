@@ -4,18 +4,14 @@
 
 // Input stage
 #include "AudioFileSourceBuffer.h"
-#include "AudioFileSourceFATFS.h"
-#include "AudioFileSourceFS.h"
 #include "AudioFileSource.h"
 #include "AudioFileSourceHTTPStream.h"
 #include "AudioFileSourceICYStream.h"
 #include "AudioFileSourceID3.h"
-#include "AudioFileSourceLittleFS.h"
 #include "AudioFileSourcePROGMEM.h"
-#include "AudioFileSourceSD.h"
-#include "AudioFileSourceSPIFFS.h"
 #include "AudioFileSourceSPIRAMBuffer.h"
 #include "AudioFileSourceSTDIO.h"
+#include "AudioFileSourceRTLSD.h"
 
 // Misc. plumbing
 #include "AudioFileStream.h"
@@ -45,6 +41,6 @@
 #include "AudioOutputNull.h"
 #include "AudioOutputSerialWAV.h"
 #include "AudioOutputSPDIF.h"
-#include "AudioOutputSPIFFSWAV.h"
 #include "AudioOutputSTDIO.h"
 #include "AudioOutputULP.h"
+#include "AudioOutputRTLCodec.h"

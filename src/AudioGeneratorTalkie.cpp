@@ -248,7 +248,7 @@ int16_t AudioGeneratorTalkie::genOneSample()
 {
   static uint8_t periodCounter;
   static int16_t x0,x1,x2,x3,x4,x5,x6,x7,x8,x9;
-  int16_t u0,u1,u2,u3,u4,u5,u6,u7,u8,u9,u10;
+  int16_t u0,u1,u2,u3,u4,u5,u6,u7,u8_,u9,u10;
 
   if (synthPeriod) {
     // Voiced source
@@ -270,8 +270,8 @@ int16_t AudioGeneratorTalkie::genOneSample()
   }
   // Lattice filter forward path
   u9 = u10 - (((int16_t)synthK10*x9) >> 7);
-  u8 = u9 - (((int16_t)synthK9*x8) >> 7);
-  u7 = u8 - (((int16_t)synthK8*x7) >> 7);
+  u8_ = u9 - (((int16_t)synthK9*x8) >> 7);
+  u7 = u8_ - (((int16_t)synthK8*x7) >> 7);
   u6 = u7 - (((int16_t)synthK7*x6) >> 7);
   u5 = u6 - (((int16_t)synthK6*x5) >> 7);
   u4 = u5 - (((int16_t)synthK5*x4) >> 7);
@@ -285,7 +285,7 @@ int16_t AudioGeneratorTalkie::genOneSample()
   if (u0 < -512) u0 = -512;
   
   // Lattice filter reverse path
-  x9 = x8 + (((int16_t)synthK9*u8) >> 7);
+  x9 = x8 + (((int16_t)synthK9*u8_) >> 7);
   x8 = x7 + (((int16_t)synthK8*u7) >> 7);
   x7 = x6 + (((int16_t)synthK7*u6) >> 7);
   x6 = x5 + (((int16_t)synthK6*u5) >> 7);

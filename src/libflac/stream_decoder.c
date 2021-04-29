@@ -2581,7 +2581,7 @@ FLAC__bool read_subframe_fixed_(FLAC__StreamDecoder *decoder, uint32_t channel, 
 {
 	FLAC__Subframe_Fixed *subframe = &decoder->private_->frame.subframes[channel].data.fixed;
 	FLAC__int32 i32;
-	FLAC__uint32 u32;
+	FLAC__uint32 u32_;
 	uint32_t u;
 
 	decoder->private_->frame.subframes[channel].type = FLAC__SUBFRAME_TYPE_FIXED;
@@ -2597,20 +2597,20 @@ FLAC__bool read_subframe_fixed_(FLAC__StreamDecoder *decoder, uint32_t channel, 
 	}
 
 	/* read entropy coding method info */
-	if(!FLAC__bitreader_read_raw_uint32(decoder->private_->input, &u32, FLAC__ENTROPY_CODING_METHOD_TYPE_LEN))
+	if(!FLAC__bitreader_read_raw_uint32(decoder->private_->input, &u32_, FLAC__ENTROPY_CODING_METHOD_TYPE_LEN))
 		return false; /* read_callback_ sets the state for us */
-	subframe->entropy_coding_method.type = (FLAC__EntropyCodingMethodType)u32;
+	subframe->entropy_coding_method.type = (FLAC__EntropyCodingMethodType)u32_;
 	switch(subframe->entropy_coding_method.type) {
 		case FLAC__ENTROPY_CODING_METHOD_PARTITIONED_RICE:
 		case FLAC__ENTROPY_CODING_METHOD_PARTITIONED_RICE2:
-			if(!FLAC__bitreader_read_raw_uint32(decoder->private_->input, &u32, FLAC__ENTROPY_CODING_METHOD_PARTITIONED_RICE_ORDER_LEN))
+			if(!FLAC__bitreader_read_raw_uint32(decoder->private_->input, &u32_, FLAC__ENTROPY_CODING_METHOD_PARTITIONED_RICE_ORDER_LEN))
 				return false; /* read_callback_ sets the state for us */
-			if(decoder->private_->frame.header.blocksize >> u32 < order) {
+			if(decoder->private_->frame.header.blocksize >> u32_ < order) {
 				send_error_to_client_(decoder, FLAC__STREAM_DECODER_ERROR_STATUS_LOST_SYNC);
 				decoder->protected_->state = FLAC__STREAM_DECODER_SEARCH_FOR_FRAME_SYNC;
 				return true;
 			}
-			subframe->entropy_coding_method.data.partitioned_rice.order = u32;
+			subframe->entropy_coding_method.data.partitioned_rice.order = u32_;
 			subframe->entropy_coding_method.data.partitioned_rice.contents = &decoder->private_->partitioned_rice_contents[channel];
 			break;
 		default:
@@ -2643,7 +2643,7 @@ FLAC__bool read_subframe_lpc_(FLAC__StreamDecoder *decoder, uint32_t channel, ui
 {
 	FLAC__Subframe_LPC *subframe = &decoder->private_->frame.subframes[channel].data.lpc;
 	FLAC__int32 i32;
-	FLAC__uint32 u32;
+	FLAC__uint32 u32_;
 	uint32_t u;
 
 	decoder->private_->frame.subframes[channel].type = FLAC__SUBFRAME_TYPE_LPC;
@@ -2659,14 +2659,14 @@ FLAC__bool read_subframe_lpc_(FLAC__StreamDecoder *decoder, uint32_t channel, ui
 	}
 
 	/* read qlp coeff precision */
-	if(!FLAC__bitreader_read_raw_uint32(decoder->private_->input, &u32, FLAC__SUBFRAME_LPC_QLP_COEFF_PRECISION_LEN))
+	if(!FLAC__bitreader_read_raw_uint32(decoder->private_->input, &u32_, FLAC__SUBFRAME_LPC_QLP_COEFF_PRECISION_LEN))
 		return false; /* read_callback_ sets the state for us */
-	if(u32 == (1u << FLAC__SUBFRAME_LPC_QLP_COEFF_PRECISION_LEN) - 1) {
+	if(u32_ == (1u << FLAC__SUBFRAME_LPC_QLP_COEFF_PRECISION_LEN) - 1) {
 		send_error_to_client_(decoder, FLAC__STREAM_DECODER_ERROR_STATUS_LOST_SYNC);
 		decoder->protected_->state = FLAC__STREAM_DECODER_SEARCH_FOR_FRAME_SYNC;
 		return true;
 	}
-	subframe->qlp_coeff_precision = u32+1;
+	subframe->qlp_coeff_precision = u32_+1;
 
 	/* read qlp shift */
 	if(!FLAC__bitreader_read_raw_int32(decoder->private_->input, &i32, FLAC__SUBFRAME_LPC_QLP_SHIFT_LEN))
@@ -2686,20 +2686,20 @@ FLAC__bool read_subframe_lpc_(FLAC__StreamDecoder *decoder, uint32_t channel, ui
 	}
 
 	/* read entropy coding method info */
-	if(!FLAC__bitreader_read_raw_uint32(decoder->private_->input, &u32, FLAC__ENTROPY_CODING_METHOD_TYPE_LEN))
+	if(!FLAC__bitreader_read_raw_uint32(decoder->private_->input, &u32_, FLAC__ENTROPY_CODING_METHOD_TYPE_LEN))
 		return false; /* read_callback_ sets the state for us */
-	subframe->entropy_coding_method.type = (FLAC__EntropyCodingMethodType)u32;
+	subframe->entropy_coding_method.type = (FLAC__EntropyCodingMethodType)u32_;
 	switch(subframe->entropy_coding_method.type) {
 		case FLAC__ENTROPY_CODING_METHOD_PARTITIONED_RICE:
 		case FLAC__ENTROPY_CODING_METHOD_PARTITIONED_RICE2:
-			if(!FLAC__bitreader_read_raw_uint32(decoder->private_->input, &u32, FLAC__ENTROPY_CODING_METHOD_PARTITIONED_RICE_ORDER_LEN))
+			if(!FLAC__bitreader_read_raw_uint32(decoder->private_->input, &u32_, FLAC__ENTROPY_CODING_METHOD_PARTITIONED_RICE_ORDER_LEN))
 				return false; /* read_callback_ sets the state for us */
-			if(decoder->private_->frame.header.blocksize >> u32 < order) {
+			if(decoder->private_->frame.header.blocksize >> u32_ < order) {
 				send_error_to_client_(decoder, FLAC__STREAM_DECODER_ERROR_STATUS_LOST_SYNC);
 				decoder->protected_->state = FLAC__STREAM_DECODER_SEARCH_FOR_FRAME_SYNC;
 				return true;
 			}
-			subframe->entropy_coding_method.data.partitioned_rice.order = u32;
+			subframe->entropy_coding_method.data.partitioned_rice.order = u32_;
 			subframe->entropy_coding_method.data.partitioned_rice.contents = &decoder->private_->partitioned_rice_contents[channel];
 			break;
 		default:
